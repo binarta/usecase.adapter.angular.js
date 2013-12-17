@@ -8,7 +8,7 @@ describe('angular.usecase.adapter.js', function () {
     });
 
     describe('usecaseAdapterFactory', function () {
-        var handler, completed, adapter;
+        var handler, completed, adapter, callbacks;
 
         function onSuccess(payload) {
             completed = payload;
@@ -16,7 +16,12 @@ describe('angular.usecase.adapter.js', function () {
 
         beforeEach(inject(function (usecaseAdapterFactory) {
             completed = undefined;
-            adapter = usecaseAdapterFactory(scope, onSuccess);
+            callbacks = {
+                rejected:function(rejections) {
+                    this.capturedRejections = rejections;
+                }
+            };
+            adapter = usecaseAdapterFactory(scope, onSuccess, callbacks);
         }));
 
         it('toggle working status', function () {
@@ -32,10 +37,11 @@ describe('angular.usecase.adapter.js', function () {
             });
 
             describe('when rejected', function() {
+                var violations = {
+                    "field-with-violations": ["violation"]
+                };
                 beforeEach(function() {
-                    adapter.rejected({
-                        "field-with-violations": ["violation"]
-                    });
+                    adapter.rejected(violations);
                 });
 
                 it('error classes can be retrieved', function () {
@@ -52,6 +58,10 @@ describe('angular.usecase.adapter.js', function () {
                     adapter.reset();
                     expect(scope.errorClassFor).toEqual({});
                     expect(scope.violations).toEqual({});
+                });
+
+                it('trigger callback', function() {
+                    expect(callbacks.capturedRejections).toEqual(violations);
                 });
             });
         });

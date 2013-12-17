@@ -1,6 +1,6 @@
 angular.module('angular.usecase.adapter', [])
     .factory('usecaseAdapterFactory', function() {
-        return function($scope, onSuccess) {
+        return function($scope, onSuccess, callbacks) {
             return {
                 start:function() {
                     $scope.working = true;
@@ -17,6 +17,7 @@ angular.module('angular.usecase.adapter', [])
                         $scope.errorClassFor[k] = violations[k] ? 'error' : '';
                         $scope.violations[k] = violations[k];
                     });
+                    if(callbacks.rejected) callbacks.rejected(violations);
                 },
                 success:onSuccess
             };
