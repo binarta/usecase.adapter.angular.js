@@ -70,5 +70,20 @@ describe('angular.usecase.adapter.js', function () {
             adapter.success(payload);
             expect(completed).toEqual(payload);
         });
+
+        describe('when no callback is defined', function() {
+            beforeEach(inject(function (usecaseAdapterFactory) {
+                adapter = usecaseAdapterFactory(scope, onSuccess, undefined);
+                adapter.reset();
+                adapter.rejected({
+                    "field-with-violations": ["violation"]
+                });
+            }));
+
+            it('violations can be retrieved', function () {
+                expect(scope.violations['field-with-no-violations']).toEqual(undefined);
+                expect(scope.violations['field-with-violations']).toEqual(['violation']);
+            });
+        });
     });
 });

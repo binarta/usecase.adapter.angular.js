@@ -17,7 +17,7 @@ angular.module('angular.usecase.adapter', [])
                         $scope.errorClassFor[k] = violations[k] ? 'error' : '';
                         $scope.violations[k] = violations[k];
                     });
-                    if(callbacks.rejected) callbacks.rejected(violations);
+                    if(callbacks && callbacks.rejected) callbacks.rejected(violations);
                 },
                 success:onSuccess
             };
