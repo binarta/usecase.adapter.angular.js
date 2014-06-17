@@ -36,6 +36,10 @@ describe('angular.usecase.adapter.js', function () {
                 adapter.reset();
             });
 
+            it('test', function() {
+                expect(scope.violationParams).toBeUndefined();
+            });
+
             describe('when rejected', function() {
                 var violations = {
                     "field-with-violations": ["violation"]
@@ -83,6 +87,34 @@ describe('angular.usecase.adapter.js', function () {
             it('violations can be retrieved', function () {
                 expect(scope.violations['field-with-no-violations']).toEqual(undefined);
                 expect(scope.violations['field-with-violations']).toEqual(['violation']);
+            });
+        });
+
+        describe('with complex reporting enabled', function() {
+            beforeEach(inject(function(usecaseAdapterFactory) {
+                adapter = usecaseAdapterFactory(scope, onSuccess, null, 'complex');
+            }));
+
+            describe('given adapter reset', function() {
+                beforeEach(function() {
+                    adapter.reset();
+                });
+
+                it('violation parmams are initialized', function() {
+                    expect(scope.violationParams).toEqual({});
+                });
+
+                describe('when rejected', function() {
+                    beforeEach(function() {
+                        adapter.rejected({
+                            "field-with-violations": [{label:"violation", params:{extra:"info"}}]
+                        });
+                    });
+
+                    it('test', function() {
+                        expect(scope.violationParams["field-with-violations"].violation).toEqual({extra:'info'})
+                    })
+                });
             });
         });
     });
