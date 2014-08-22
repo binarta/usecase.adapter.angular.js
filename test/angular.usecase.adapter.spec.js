@@ -60,8 +60,8 @@ describe('angular.usecase.adapter.js', function () {
 
                 it('reset rejections', function () {
                     adapter.reset();
-                    expect(scope.errorClassFor).toEqual({});
-                    expect(scope.violations).toEqual({});
+                    expect(scope.errorClassFor).toBeUndefined();
+                    expect(scope.violations).toBeUndefined();
                 });
 
                 it('trigger callback', function() {

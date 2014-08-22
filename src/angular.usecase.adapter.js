@@ -9,11 +9,13 @@ angular.module('angular.usecase.adapter', [])
                     $scope.working = false;
                 },
                 reset:function() {
-                    $scope.errorClassFor = {};
-                    $scope.violations = {};
+                    delete $scope.errorClassFor;
+                    delete $scope.violations;
                     if (reportType == 'complex') $scope.violationParams = {};
                 },
                 rejected:function(violations) {
+                    $scope.errorClassFor = {};
+                    $scope.violations = {};
                     function exposeViolationParamsFor(k) {
                         $scope.violationParams[k] = {};
                         violations[k].forEach(function(it) {
