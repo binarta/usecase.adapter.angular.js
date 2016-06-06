@@ -1,0 +1,5 @@
+{
+  "default": {
+    "angular.usecase.adapter": "bower_components/binarta.usecase.adapter.angular/src/angular.usecase.adapter.js"
+  }
+}
